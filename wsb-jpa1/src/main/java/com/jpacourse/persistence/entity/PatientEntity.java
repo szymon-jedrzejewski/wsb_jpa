@@ -2,7 +2,7 @@ package com.jpacourse.persistence.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-
+import com.jpacourse.dto.VisitTO;
 import javax.persistence.*;
 
 @Entity
@@ -24,6 +24,8 @@ public class PatientEntity {
 
 	private String email;
 
+	private Integer age;
+
 	@Column(nullable = false)
 	private String patientNumber;
 
@@ -31,8 +33,8 @@ public class PatientEntity {
 	private LocalDate dateOfBirth;
 
 	// Relacja dwustronna: Patient (rodzic) -> Visit (dziecko)
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "PATIENT_ID")
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "patient")
+	//@JoinColumn(name = "PATIENT_ID")
 	private List<VisitEntity> visits;
 	public Long getId() {
 		return id;
@@ -90,4 +92,11 @@ public class PatientEntity {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	public int getAge() { return age; }
+
+	public void setAge(int age) {this.age = age; }
+
+	public List<VisitEntity> getVisits() {return visits; }
+
+	public void setVisits(List<VisitEntity> visits) {this.visits = visits; }
 }

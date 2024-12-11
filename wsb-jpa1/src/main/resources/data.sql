@@ -5,9 +5,9 @@ insert into address (id, address_line1, address_line2, city, postal_code) values
 insert into doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization) values (1, 'John', 'Doe', '123456789', 'john.doe@example.com', 'D001', 'CARDIOLOGY');
 insert into doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization) values (2, 'Jane', 'Smith', '987654321', 'jane.smith@example.com', 'D002', 'NEUROLOGY');
 insert into doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization) values (3, 'Mike', 'Brown', '456123789', 'mike.brown@example.com', 'D003', 'DERMATOLOGY');
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth) values (1, 'Alice', 'Green', '321654987', 'alice.green@example.com', 'P001', '1990-05-01');
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth) values (2, 'Bob', 'White', '789123456', 'bob.white@example.com', 'P002', '1985-08-15');
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth) values (3, 'Charlie', 'Black', '159753486', 'charlie.black@example.com', 'P003', '2000-12-20');
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age) values (1, 'Alice', 'Green', '321654987', 'alice.green@example.com', 'P001', '1990-05-01', 20);
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age) values (2, 'Bob', 'White', '789123456', 'bob.white@example.com', 'P002', '1985-08-15', 35);
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age) values (3, 'Charlie', 'Black', '159753486', 'charlie.black@example.com', 'P003', '2000-12-20', 40);
 insert into visit (id, description, time, doctor_id, patient_id) values (1, 'Routine checkup', '2024-11-20 10:00:00', 1, 1);
 insert into visit (id, description, time, doctor_id, patient_id) values (2, 'Follow-up appointment', '2024-11-21 14:30:00', 2, 2);
 insert into visit (id, description, time, doctor_id, patient_id) values (3, 'Dermatology consultation', '2024-11-22 09:15:00', 3, 3);
