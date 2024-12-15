@@ -54,7 +54,12 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
     }
 
     @Override
-    public List<PatientEntity> findPatientsOlderThan(int age) {
-        return List.of();
+    public List<PatientEntity> findPatientsWithGivenBloodTypes(List<Integer> bloodTypes) {
+        return entityManager.createQuery(
+                        "SELECT p  FROM PatientEntity p WHERE p.bloodType IN :bloodTypes",
+                        PatientEntity.class
+                )
+                .setParameter("bloodTypes", bloodTypes)
+                .getResultList();
     }
 }

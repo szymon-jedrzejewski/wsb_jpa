@@ -10,12 +10,12 @@ insert into doctor (id, first_name, last_name, telephone_number, email, doctor_n
 values (2, 'Jane', 'Smith', '987654321', 'jane.smith@example.com', 'D002', 'NEUROLOGY');
 insert into doctor (id, first_name, last_name, telephone_number, email, doctor_number, specialization)
 values (3, 'Mike', 'Brown', '456123789', 'mike.brown@example.com', 'D003', 'DERMATOLOGY');
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age)
-values (1, 'Alice', 'Green', '321654987', 'alice.green@example.com', 'P001', '1990-05-01', 20);
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age)
-values (2, 'Bob', 'White', '789123456', 'bob.white@example.com', 'P002', '1985-08-15', 35);
-insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, age)
-values (3, 'Charlie', 'Black', '159753486', 'charlie.black@example.com', 'P003', '2000-12-20', 40);
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, blood_type)
+values (1, 'Alice', 'Green', '321654987', 'alice.green@example.com', 'P001', '1990-05-01', 4);
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, blood_type)
+values (2, 'Bob', 'White', '789123456', 'bob.white@example.com', 'P002', '1985-08-15', 4);
+insert into patient (id, first_name, last_name, telephone_number, email, patient_number, date_of_birth, blood_type)
+values (3, 'Charlie', 'Black', '159753486', 'charlie.black@example.com', 'P003', '2000-12-20', 4);
 insert into visit (id, description, time, doctor_id, patient_id)
 values (1, 'Routine checkup', '2024-11-20 10:00:00', 1, 1);
 insert into visit (id, description, time, doctor_id, patient_id)

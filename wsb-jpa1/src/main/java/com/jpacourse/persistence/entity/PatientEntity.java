@@ -23,7 +23,8 @@ public class PatientEntity {
 
     private String email;
 
-    private Integer age;
+    @Column
+    private Integer bloodType;
 
     @Column(nullable = false)
     private String patientNumber;
@@ -90,12 +91,12 @@ public class PatientEntity {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public int getAge() {
-        return age;
+    public int getBloodType() {
+        return bloodType;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBloodType(int age) {
+        this.bloodType = age;
     }
 
     public List<VisitEntity> getVisits() {

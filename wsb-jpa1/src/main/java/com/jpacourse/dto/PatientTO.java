@@ -11,7 +11,7 @@ public class PatientTO implements Serializable {
     private String lastName;
     private String telephoneNumber;
     private String email;
-    private Integer age;
+    private Integer bloodType;
     private String patientNumber;
     private LocalDate dateOfBirth;
     private List<VisitTO> visits;
@@ -56,12 +56,12 @@ public class PatientTO implements Serializable {
         this.email = email;
     }
 
-    public Integer getAge() {
-        return age;
+    public Integer getBloodType() {
+        return bloodType;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setBloodType(Integer bloodType) {
+        this.bloodType = bloodType;
     }
 
     public String getPatientNumber() {

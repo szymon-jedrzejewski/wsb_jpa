@@ -43,7 +43,7 @@ public class PatientServiceTest {
         patientEntity.setLastName("Doe");
         patientEntity.setTelephoneNumber("123456789");
         patientEntity.setEmail("john.doe@example.com");
-        patientEntity.setAge(30);
+        patientEntity.setBloodType(30);
         patientEntity.setPatientNumber("P123");
         patientEntity.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -61,7 +61,7 @@ public class PatientServiceTest {
         assertThat(patientTO.getLastName()).isEqualTo("Doe");
         assertThat(patientTO.getTelephoneNumber()).isEqualTo("123456789");
         assertThat(patientTO.getEmail()).isEqualTo("john.doe@example.com");
-        assertThat(patientTO.getAge()).isEqualTo(30);
+        assertThat(patientTO.getBloodType()).isEqualTo(30);
         assertThat(patientTO.getPatientNumber()).isEqualTo("P123");
         assertThat(patientTO.getDateOfBirth()).isEqualTo(LocalDate.of(1993, 1, 15));
 
@@ -89,7 +89,7 @@ public class PatientServiceTest {
         patient.setLastName("Doe");
         patient.setTelephoneNumber("123456789");
         patient.setEmail("john.doe@example.com");
-        patient.setAge(30);
+        patient.setBloodType(30);
         patient.setPatientNumber("P123");
         patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 

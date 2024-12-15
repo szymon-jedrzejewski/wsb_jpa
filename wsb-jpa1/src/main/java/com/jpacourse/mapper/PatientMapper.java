@@ -16,7 +16,7 @@ public final class PatientMapper {
         patientTO.setLastName(patientEntity.getLastName());
         patientTO.setTelephoneNumber(patientEntity.getTelephoneNumber());
         patientTO.setEmail(patientEntity.getEmail());
-        patientTO.setAge(patientEntity.getAge());
+        patientTO.setBloodType(patientEntity.getBloodType());
         patientTO.setPatientNumber(patientEntity.getPatientNumber());
         patientTO.setDateOfBirth(patientEntity.getDateOfBirth());
 
@@ -26,27 +26,5 @@ public final class PatientMapper {
         }
 
         return patientTO;
-    }
-
-    public static PatientEntity mapToEntity(final PatientTO patientTO) {
-        if (patientTO == null) {
-            return null;
-        }
-
-        PatientEntity patientEntity = new PatientEntity();
-        patientEntity.setId(patientTO.getId());
-        patientEntity.setFirstName(patientTO.getFirstName());
-        patientEntity.setLastName(patientTO.getLastName());
-        patientEntity.setTelephoneNumber(patientTO.getTelephoneNumber());
-        patientEntity.setEmail(patientTO.getEmail());
-        patientEntity.setAge(patientTO.getAge());
-        patientEntity.setPatientNumber(patientTO.getPatientNumber());
-        patientEntity.setDateOfBirth(patientTO.getDateOfBirth());
-
-        if (patientTO.getVisits() != null) {
-            patientEntity.setVisits(VisitMapper.mapToEntityList(patientTO.getVisits()));
-        }
-
-        return patientEntity;
     }
 }

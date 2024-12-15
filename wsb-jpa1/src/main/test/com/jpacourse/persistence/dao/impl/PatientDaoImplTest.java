@@ -42,7 +42,7 @@ class PatientDaoImplTest {
         patient.setLastName("Doe");
         patient.setTelephoneNumber("123456789");
         patient.setEmail("john.doe@example.com");
-        patient.setAge(30);
+        patient.setBloodType(30);
         patient.setPatientNumber("P123");
         patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -51,7 +51,7 @@ class PatientDaoImplTest {
         patient1.setLastName("Doe");
         patient1.setTelephoneNumber("987654321");
         patient1.setEmail("william.doe@example.com");
-        patient1.setAge(30);
+        patient1.setBloodType(30);
         patient1.setPatientNumber("P321");
         patient1.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -60,7 +60,7 @@ class PatientDaoImplTest {
         patient2.setLastName("Murray");
         patient2.setTelephoneNumber("987654321");
         patient2.setEmail("william.doe@example.com");
-        patient2.setAge(30);
+        patient2.setBloodType(30);
         patient2.setPatientNumber("P321");
         patient2.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -81,7 +81,7 @@ class PatientDaoImplTest {
         patient1.setLastName("Doe");
         patient1.setTelephoneNumber("987654321");
         patient1.setEmail("william.doe@example.com");
-        patient1.setAge(30);
+        patient1.setBloodType(30);
         patient1.setPatientNumber("P321");
         patient1.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -90,7 +90,7 @@ class PatientDaoImplTest {
         patient2.setLastName("Murray");
         patient2.setTelephoneNumber("987654321");
         patient2.setEmail("william.doe@example.com");
-        patient2.setAge(30);
+        patient2.setBloodType(30);
         patient2.setPatientNumber("P321");
         patient2.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
@@ -111,6 +111,48 @@ class PatientDaoImplTest {
                 .hasSize(1)
                 .containsExactlyInAnyOrder(savedPatient1)
                 .doesNotContain(savedPatient2);
+    }
+
+    @Test
+    public void findPatientsWithGivenBloodTypes_shouldReturnPatientsThatHaveBloodType1or2() {
+        PatientEntity patient1 = new PatientEntity();
+        patient1.setFirstName("William");
+        patient1.setLastName("Doe");
+        patient1.setTelephoneNumber("987654321");
+        patient1.setEmail("william.doe@example.com");
+        patient1.setBloodType(1);
+        patient1.setPatientNumber("P321");
+        patient1.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity patient2 = new PatientEntity();
+        patient2.setFirstName("William");
+        patient2.setLastName("Murray");
+        patient2.setTelephoneNumber("987654321");
+        patient2.setEmail("william.doe@example.com");
+        patient2.setBloodType(2);
+        patient2.setPatientNumber("P321");
+        patient2.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity patient3 = new PatientEntity();
+        patient3.setFirstName("William");
+        patient3.setLastName("Murray");
+        patient3.setTelephoneNumber("987654321");
+        patient3.setEmail("william.doe@example.com");
+        patient3.setBloodType(4);
+        patient3.setPatientNumber("P321");
+        patient3.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity savedPatient1 = patientDao.save(patient1);
+        PatientEntity savedPatient2 = patientDao.save(patient2);
+        PatientEntity savedPatient3 = patientDao.save(patient3);
+
+        List<PatientEntity> patients = patientDao.findPatientsWithGivenBloodTypes(List.of(1,2));
+
+        assertThat(patients)
+                .isNotEmpty()
+                .hasSize(2)
+                .containsExactlyInAnyOrder(savedPatient1, savedPatient2)
+                .doesNotContain(savedPatient3);
     }
 
     @Test
@@ -157,7 +199,7 @@ class PatientDaoImplTest {
         patient.setLastName("Doe");
         patient.setTelephoneNumber("123456789");
         patient.setEmail("john.doe@example.com");
-        patient.setAge(30);
+        patient.setBloodType(30);
         patient.setPatientNumber("P123");
         patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
