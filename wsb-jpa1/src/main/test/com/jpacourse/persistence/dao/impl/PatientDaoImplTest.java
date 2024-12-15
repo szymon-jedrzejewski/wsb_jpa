@@ -19,8 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,6 +34,45 @@ class PatientDaoImplTest {
 
     @Autowired
     private VisitDao visitDao;
+
+    @Test
+    public void findByLasName_ShouldReturnPatientsWithGivenLastName() {
+        PatientEntity patient = new PatientEntity();
+        patient.setFirstName("John");
+        patient.setLastName("Doe");
+        patient.setTelephoneNumber("123456789");
+        patient.setEmail("john.doe@example.com");
+        patient.setAge(30);
+        patient.setPatientNumber("P123");
+        patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity patient1 = new PatientEntity();
+        patient1.setFirstName("William");
+        patient1.setLastName("Doe");
+        patient1.setTelephoneNumber("987654321");
+        patient1.setEmail("william.doe@example.com");
+        patient1.setAge(30);
+        patient1.setPatientNumber("P321");
+        patient1.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity patient2 = new PatientEntity();
+        patient2.setFirstName("William");
+        patient2.setLastName("Murray");
+        patient2.setTelephoneNumber("987654321");
+        patient2.setEmail("william.doe@example.com");
+        patient2.setAge(30);
+        patient2.setPatientNumber("P321");
+        patient2.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity savedPatient = patientDao.save(patient);
+        PatientEntity savedPatient1 = patientDao.save(patient1);
+        patientDao.save(patient2);
+
+        assertThat(patientDao.findPatientByLastName("Doe"))
+                .isNotNull()
+                .hasSize(2)
+                .containsExactlyInAnyOrder(savedPatient1, savedPatient);
+    }
 
     @Test
     void addVisitToPatient() {
@@ -72,17 +110,7 @@ class PatientDaoImplTest {
     @Test
     public void deletePatient_cascadesVisitsButNotDoctors() {
         // Given
-        DoctorEntity doctor = new DoctorEntity();
-        doctor.setFirstName("Dr.");
-        doctor.setLastName("Smith");
-        doctor.setSpecialization(Specialization.DERMATOLOGIST);
-        doctor.setDoctorNumber("123123");
-        doctor.setEmail("email@example.com");
-        doctor.setId(doctor.getId());
-        doctor.setTelephoneNumber("1212121");
-
-        doctor = doctorDao.merge(doctor);
-
+        DoctorEntity doctor = createDoctor();
 
         // Given
         PatientEntity patient = new PatientEntity();
@@ -94,14 +122,7 @@ class PatientDaoImplTest {
         patient.setPatientNumber("P123");
         patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
-        List<VisitEntity> visits = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            VisitEntity visit = new VisitEntity();
-            visit.setTime(LocalDateTime.now().minusDays(i));
-            visit.setDoctor(doctor);
-            visit.setPatient(patient);
-            visits.add(visit);
-        }
+        List<VisitEntity> visits = prepareVisits(doctor, patient);
         patient.setVisits(visits);
         PatientEntity savedPatient = patientDao.save(patient);
 
@@ -115,5 +136,31 @@ class PatientDaoImplTest {
 
         // And
         Assertions.assertThat(doctorDao.findOne(doctor.getId())).isNotNull();
+    }
+
+    private static List<VisitEntity> prepareVisits(DoctorEntity doctor, PatientEntity patient) {
+        List<VisitEntity> visits = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            VisitEntity visit = new VisitEntity();
+            visit.setTime(LocalDateTime.now().minusDays(i));
+            visit.setDoctor(doctor);
+            visit.setPatient(patient);
+            visits.add(visit);
+        }
+        return visits;
+    }
+
+    private DoctorEntity createDoctor() {
+        DoctorEntity doctor = new DoctorEntity();
+        doctor.setFirstName("Dr.");
+        doctor.setLastName("Smith");
+        doctor.setSpecialization(Specialization.DERMATOLOGIST);
+        doctor.setDoctorNumber("123123");
+        doctor.setEmail("email@example.com");
+        doctor.setId(doctor.getId());
+        doctor.setTelephoneNumber("1212121");
+
+        doctor = doctorDao.merge(doctor);
+        return doctor;
     }
 }
