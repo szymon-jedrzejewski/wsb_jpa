@@ -7,7 +7,7 @@ import java.util.List;
 public interface PatientDao extends Dao<PatientEntity, Long> {
     List<PatientEntity> findPatientByLastName(String lastName);
 
-    List<PatientEntity> findPatientsThatHadMoreVisitsThan(int numberOfVisits);
+    List<PatientEntity> findPatientsThatHadMoreVisitsThan(Long numberOfVisits);
 
     List<PatientEntity> findPatientsOlderThan(int age);
 }

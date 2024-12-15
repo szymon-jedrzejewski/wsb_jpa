@@ -25,8 +25,13 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
         visit.setDoctor(doctor);
         visit.setPatient(patient);
 
+        if (patient.getVisits() == null) {
+            patient.setVisits(List.of(visit));
+        } else {
+            patient.getVisits().add(visit);
+        }
 
-        entityManager.merge(patient);
+        save(patient);
 
     }
 
@@ -38,8 +43,14 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
     }
 
     @Override
-    public List<PatientEntity> findPatientsThatHadMoreVisitsThan(int numberOfVisits) {
-        return List.of();
+    public List<PatientEntity> findPatientsThatHadMoreVisitsThan(Long numberOfVisits) {
+        String query = "SELECT p " +
+                "FROM PatientEntity p " +
+                "WHERE (SELECT COUNT(v) FROM VisitEntity v WHERE v.patient.id = p.id) > :numberOfVisits";
+
+        return entityManager.createQuery(query, PatientEntity.class)
+                .setParameter("numberOfVisits", numberOfVisits)
+                .getResultList();
     }
 
     @Override

@@ -75,6 +75,45 @@ class PatientDaoImplTest {
     }
 
     @Test
+    public void findPatientsThatHadMoreVisitsThan_shouldReturnPatientsThatHaveMoreThan3Visits() {
+        PatientEntity patient1 = new PatientEntity();
+        patient1.setFirstName("William");
+        patient1.setLastName("Doe");
+        patient1.setTelephoneNumber("987654321");
+        patient1.setEmail("william.doe@example.com");
+        patient1.setAge(30);
+        patient1.setPatientNumber("P321");
+        patient1.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        PatientEntity patient2 = new PatientEntity();
+        patient2.setFirstName("William");
+        patient2.setLastName("Murray");
+        patient2.setTelephoneNumber("987654321");
+        patient2.setEmail("william.doe@example.com");
+        patient2.setAge(30);
+        patient2.setPatientNumber("P321");
+        patient2.setDateOfBirth(LocalDate.of(1993, 1, 15));
+
+        DoctorEntity doctor = createDoctor();
+
+        List<VisitEntity> visits = prepareVisits(doctor, patient1);
+
+        patient1.setVisits(visits);
+        patient2.setVisits(List.of(visits.get(0)));
+
+        PatientEntity savedPatient1 = patientDao.save(patient1);
+        PatientEntity savedPatient2 = patientDao.save(patient2);
+
+        List<PatientEntity> patients = patientDao.findPatientsThatHadMoreVisitsThan(3L);
+
+        assertThat(patients)
+                .isNotEmpty()
+                .hasSize(1)
+                .containsExactlyInAnyOrder(savedPatient1)
+                .doesNotContain(savedPatient2);
+    }
+
+    @Test
     void addVisitToPatient() {
         // given: assume there are existing doctor and patient records in the database
         Long doctorId = 1L; // Assume the doctor with ID 1 exists in the database
@@ -140,7 +179,7 @@ class PatientDaoImplTest {
 
     private static List<VisitEntity> prepareVisits(DoctorEntity doctor, PatientEntity patient) {
         List<VisitEntity> visits = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             VisitEntity visit = new VisitEntity();
             visit.setTime(LocalDateTime.now().minusDays(i));
             visit.setDoctor(doctor);
