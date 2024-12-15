@@ -1,7 +1,5 @@
 package com.jpacourse.dto;
 
-import com.jpacourse.persistence.entity.VisitEntity;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;

@@ -1,11 +1,10 @@
 package com.jpacourse.persistance.service;
 
 
-
 import com.jpacourse.dto.PatientTO;
+import com.jpacourse.dto.VisitTO;
 import com.jpacourse.persistence.dao.DoctorDao;
 import com.jpacourse.persistence.dao.PatientDao;
-import com.jpacourse.persistence.dao.VisitDao;
 import com.jpacourse.persistence.entity.DoctorEntity;
 import com.jpacourse.persistence.entity.PatientEntity;
 import com.jpacourse.persistence.entity.VisitEntity;
@@ -16,10 +15,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +33,10 @@ public class PatientServiceTest {
     private PatientDao patientDao;
 
     @Autowired
-    private VisitDao visitDao;
-
-    @Autowired
     private DoctorDao doctorDao;
 
-
     @Test
-    public void testFindById_returnsPatientTO() {
+    public void findById_returnsPatientTO() {
         // Given
         PatientEntity patientEntity = new PatientEntity();
         patientEntity.setFirstName("John");
@@ -76,7 +70,7 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void testDeletePatient_cascadesVisitsButNotDoctors() {
+    public void findVisitsForPatient_shouldReturnAllVisitsForPatient() {
         // Given
         DoctorEntity doctor = new DoctorEntity();
         doctor.setFirstName("Dr.");
@@ -87,8 +81,7 @@ public class PatientServiceTest {
         doctor.setId(doctor.getId());
         doctor.setTelephoneNumber("1212121");
 
-        doctor = doctorDao.merge(doctor);
-
+        doctor = doctorDao.save(doctor);
 
         // Given
         PatientEntity patient = new PatientEntity();
@@ -98,10 +91,10 @@ public class PatientServiceTest {
         patient.setEmail("john.doe@example.com");
         patient.setAge(30);
         patient.setPatientNumber("P123");
-        //patient.setId(12L);
         patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
         List<VisitEntity> visits = new ArrayList<>();
+
         for (int i = 0; i < 3; i++) {
             VisitEntity visit = new VisitEntity();
             visit.setTime(LocalDateTime.now().minusDays(i));
@@ -109,18 +102,15 @@ public class PatientServiceTest {
             visit.setPatient(patient);
             visits.add(visit);
         }
+
         patient.setVisits(visits);
+
         PatientEntity savedPatient = patientDao.save(patient);
 
-        assertThat(visitDao.findAll().size()).isGreaterThan(0);
-
         // When
-        patientDao.delete(savedPatient.getId());
+        List<VisitTO> result = patientService.findVisitsForPatient(savedPatient.getId());
 
         // Then
-        assertThat(visitDao.findAll()).isNotEmpty();
-
-        // And
-        assertThat(doctorDao.findOne(doctor.getId())).isNotNull();
+        assertThat(result).isNotEmpty().hasSize(3);
     }
 }

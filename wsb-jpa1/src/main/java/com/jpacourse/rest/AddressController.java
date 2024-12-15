@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AddressController
-{
+public class AddressController {
 
     private final AddressService addressService;
 
@@ -21,8 +20,7 @@ public class AddressController
     @GetMapping("/address/{id}")
     AddressTO findBaId(@PathVariable final Long id) {
         final AddressTO address = addressService.findById(id);
-        if(address != null)
-        {
+        if (address != null) {
             return address;
         }
         throw new EntityNotFoundException(id);

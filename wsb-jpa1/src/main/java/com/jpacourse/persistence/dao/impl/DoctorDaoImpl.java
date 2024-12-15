@@ -8,8 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Repository
-public class DoctorDaoImpl extends AbstractDao<DoctorEntity, Long> implements DoctorDao
-{
+public class DoctorDaoImpl extends AbstractDao<DoctorEntity, Long> implements DoctorDao {
     @PersistenceContext
     private EntityManager entityManager;
 

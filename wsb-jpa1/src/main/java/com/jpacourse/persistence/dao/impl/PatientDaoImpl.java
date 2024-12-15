@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 @Transactional
-public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements PatientDao
-{
+public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements PatientDao {
 
     @Transactional
     public void addVisitToPatient(Long patientId, Long doctorId, LocalDateTime visitDate, String description) {
@@ -28,5 +28,20 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
 
         entityManager.merge(patient);
 
+    }
+
+    @Override
+    public List<PatientEntity> findPatientByLastName(String lastName) {
+        return List.of();
+    }
+
+    @Override
+    public List<PatientEntity> findPatientsThatHadMoreVisitsThan(int numberOfVisits) {
+        return List.of();
+    }
+
+    @Override
+    public List<PatientEntity> findPatientsOlderThan(int age) {
+        return List.of();
     }
 }

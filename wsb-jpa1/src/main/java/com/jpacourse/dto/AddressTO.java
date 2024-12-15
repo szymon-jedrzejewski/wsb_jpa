@@ -2,8 +2,7 @@ package com.jpacourse.dto;
 
 import java.io.Serializable;
 
-public class AddressTO implements Serializable
-{
+public class AddressTO implements Serializable {
     private Long id;
 
     private String city;

@@ -12,13 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class VisitServiceImpl implements VisitService
-{
+public class VisitServiceImpl implements VisitService {
     private final VisitDao visitDao;
 
     @Autowired
-    public VisitServiceImpl(VisitDao pVisitDao)
-    {
+    public VisitServiceImpl(VisitDao pVisitDao) {
         visitDao = pVisitDao;
     }
 
