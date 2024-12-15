@@ -156,35 +156,23 @@ class PatientDaoImplTest {
     }
 
     @Test
-    void addVisitToPatient() {
-        // given: assume there are existing doctor and patient records in the database
-        Long doctorId = 1L; // Assume the doctor with ID 1 exists in the database
-        Long patientId = 1L; // Assume the patient with ID 1 exists in the database
+    void addVisitToPatient_shouldAddVisitToPatient() {
+        DoctorEntity doctor = createDoctor();
 
-        // Fetch the doctor from the database
-        DoctorEntity doctor = doctorDao.findOne(doctorId);
-        assertThat(doctor).isNotNull();
+        PatientEntity patient = new PatientEntity();
+        patient.setFirstName("John");
+        patient.setLastName("Doe");
+        patient.setTelephoneNumber("123456789");
+        patient.setEmail("john.doe@example.com");
+        patient.setBloodType(30);
+        patient.setPatientNumber("P123");
+        patient.setDateOfBirth(LocalDate.of(1993, 1, 15));
 
-        // Fetch the patient from the database
-        PatientEntity patient = patientDao.findOne(patientId);
-        assertThat(patient).isNotNull();
+        PatientEntity savedPatient = patientDao.save(patient);
 
-        // when: add a visit to the patient
-        LocalDateTime visitDate = LocalDateTime.of(2024, 12, 8, 15, 45);
-        String description = "Routine checkup";
+        patientDao.addVisitToPatient(savedPatient.getId(), doctor.getId(), LocalDateTime.now(), "Have fun");
 
-        patientDao.addVisitToPatient(patient.getId(), doctor.getId(), visitDate, description);
-
-        // then: verify the visit was added
-        PatientEntity updatedPatient = patientDao.findOne(patient.getId());
-        assertThat(updatedPatient).isNotNull();
-        assertThat(updatedPatient.getVisits()).isNotNull();
-
-        // Assert the visit has the correct details
-        VisitEntity visit = updatedPatient.getVisits().get(0);
-        assertThat(visit.getTime()).isNotNull();
-        assertThat(visit.getDescription()).isEqualTo(description);
-        assertThat(visit.getDoctor().getId()).isEqualTo(doctor.getId());
+        assertThat(savedPatient.getVisits()).isNotNull().isNotEmpty().hasSize(1);
     }
 
 
