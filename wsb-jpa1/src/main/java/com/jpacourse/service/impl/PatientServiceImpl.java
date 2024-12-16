@@ -41,4 +41,28 @@ public class PatientServiceImpl implements PatientService {
                 .map(VisitMapper::mapToTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<PatientTO> findPatientsByLastName(String lastName) {
+        return patientDao.findPatientByLastName(lastName)
+                .stream()
+                .map(PatientMapper::mapToTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientTO> findPatientsThatHadMoreVisitsThan(Long numberOfVisits) {
+        return patientDao.findPatientsThatHadMoreVisitsThan(numberOfVisits)
+                .stream()
+                .map(PatientMapper::mapToTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PatientTO> findPatientsWithGivenBloodTypes(List<Integer> bloodTypes) {
+        return patientDao.findPatientsWithGivenBloodTypes(bloodTypes)
+                .stream()
+                .map(PatientMapper::mapToTO)
+                .collect(Collectors.toList());
+    }
 }

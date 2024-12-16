@@ -35,6 +35,7 @@ public class PatientDaoImpl extends AbstractDao<PatientEntity, Long> implements 
 
     }
 
+    //Could be done with ignore case
     @Override
     public List<PatientEntity> findPatientByLastName(String lastName) {
         return entityManager.createQuery("SELECT p FROM PatientEntity p WHERE p.lastName = :lastName", PatientEntity.class)
