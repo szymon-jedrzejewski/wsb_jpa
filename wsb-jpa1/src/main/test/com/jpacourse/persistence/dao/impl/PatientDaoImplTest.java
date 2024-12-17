@@ -14,12 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.OptimisticLockException;
+import javax.persistence.RollbackException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,12 +33,52 @@ class PatientDaoImplTest {
 
     @Autowired
     private PatientDaoImpl patientDao;
-
     @Autowired
     private DoctorDao doctorDao;
-
     @Autowired
     private VisitDao visitDao;
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
+
+    @Test
+    void testOptimisticLocking() {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        PatientEntity patient = new PatientEntity();
+        patient.setFirstName("John");
+        patient.setLastName("Lincoln");
+        patient.setTelephoneNumber("123456789");
+        patient.setPatientNumber("PN123456");
+        patient.setDateOfBirth(java.time.LocalDate.of(1990, 1, 1));
+
+        em.persist(patient);
+        em.getTransaction().commit();
+        em.close();
+
+        Long patientId = patient.getId();
+
+        EntityManager em1 = entityManagerFactory.createEntityManager();
+        EntityManager em2 = entityManagerFactory.createEntityManager();
+
+        em1.getTransaction().begin();
+        em2.getTransaction().begin();
+
+        PatientEntity patient1 = em1.find(PatientEntity.class, patientId);
+        PatientEntity patient2 = em2.find(PatientEntity.class, patientId);
+
+        patient1.setTelephoneNumber("987654321");
+        em1.getTransaction().commit();
+        em1.close();
+
+        patient2.setTelephoneNumber("555555555");
+
+        assertThatThrownBy(() -> em2.getTransaction().commit())
+                .isInstanceOf(RollbackException.class)
+                .hasCauseInstanceOf(OptimisticLockException.class);
+
+        em2.close();
+    }
 
     @Test
     public void findByLasName_ShouldReturnPatientsWithGivenLastName() {
@@ -146,7 +191,7 @@ class PatientDaoImplTest {
         PatientEntity savedPatient2 = patientDao.save(patient2);
         PatientEntity savedPatient3 = patientDao.save(patient3);
 
-        List<PatientEntity> patients = patientDao.findPatientsWithGivenBloodTypes(List.of(1,2));
+        List<PatientEntity> patients = patientDao.findPatientsWithGivenBloodTypes(List.of(1, 2));
 
         assertThat(patients)
                 .isNotEmpty()

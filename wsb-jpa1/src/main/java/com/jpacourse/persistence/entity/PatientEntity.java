@@ -34,6 +34,8 @@ public class PatientEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "patient")
     private List<VisitEntity> visits;
+    @Version
+    private Integer version;
 
     public Long getId() {
         return id;
@@ -105,5 +107,17 @@ public class PatientEntity {
 
     public void setVisits(List<VisitEntity> visits) {
         this.visits = visits;
+    }
+
+    public void setBloodType(Integer bloodType) {
+        this.bloodType = bloodType;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
